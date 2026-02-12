@@ -1,0 +1,90 @@
+# 🔖 Smart Bookmark
+
+A real-time bookmark manager where users sign in with Google, save private bookmarks, and see them sync instantly across tabs.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 14 (App Router) |
+| Auth | Supabase Auth (Google OAuth) |
+| Database | Supabase PostgreSQL + Row Level Security |
+| Realtime | Supabase Realtime (Postgres Changes) |
+| Styling | Tailwind CSS v4 |
+| Deployment | Vercel |
+
+## Features
+
+- **Google-only Auth** — One-click sign in, no email/password
+- **Private Bookmarks** — Row Level Security ensures users only see their own data
+- **Real-time Sync** — Add a bookmark in one tab, it appears in the other instantly
+- **Add & Delete** — Simple CRUD with URL validation
+- **Dark Glassmorphism UI** — Modern design with gradient accents and micro-animations
+
+---
+
+## Run Locally
+
+```bash
+git clone https://github.com/<your-username>/smart-bookmark.git
+cd smart-bookmark
+npm install
+```
+
+Create `.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### Google OAuth Setup
+
+1. Create a Google Cloud OAuth 2.0 Client ID
+2. In Supabase Dashboard → **Authentication → Providers → Google** — enable and paste Client ID + Secret
+3. In Supabase → **Authentication → URL Configuration** — add `http://localhost:3000/auth/callback` to Redirect URLs
+
+---
+
+## Problems Encountered & Solutions
+
+### 1. npm rejected the project directory name
+
+**Problem**: `npx create-next-app@latest ./` failed because the folder `Smart_Bookmark` contains capital letters, which violates npm naming rules.
+
+**Solution**: Created `package.json` manually with a lowercase name (`smart-bookmark`) and installed Next.js, React, and all dependencies separately via `npm install`.
+
+### 2. OAuth redirect went nowhere after Google sign-in
+
+**Problem**: After signing in with Google, the app stayed on the same page and never redirected to the dashboard. The `redirectTo` parameter was incorrectly set to Supabase's internal callback URL (`https://xxx.supabase.co/auth/v1/callback`).
+
+**Solution**: Changed `redirectTo` to the **app's own** `/auth/callback` route: `${window.location.origin}/auth/callback`. Supabase handles the Google ↔ Supabase callback internally — `redirectTo` is where Supabase sends the user back to *our* app with an auth code. Also had to whitelist the app URL in Supabase Dashboard → Authentication → URL Configuration → Redirect URLs.
+
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx              # Root layout with fonts & metadata
+│   ├── page.tsx                # Landing page (redirects if logged in)
+│   ├── globals.css             # Theme tokens & global styles
+│   ├── auth/callback/route.ts  # OAuth code → session exchange
+│   └── dashboard/page.tsx      # Protected bookmark dashboard
+├── components/
+│   ├── AuthButton.tsx          # Google sign-in button
+│   ├── Header.tsx              # Sticky nav with user info
+│   ├── AddBookmarkForm.tsx     # Title + URL form
+│   ├── BookmarkCard.tsx        # Single bookmark display
+│   └── BookmarkList.tsx        # Real-time list with subscriptions
+├── lib/
+│   ├── supabase/client.ts      # Browser Supabase client
+│   ├── supabase/server.ts      # Server Supabase client
+│   └── types.ts                # Bookmark type definition
+└── middleware.ts               # Session refresh on every request
+```
+
+
