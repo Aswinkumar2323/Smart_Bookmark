@@ -19,10 +19,10 @@ export default async function Dashboard() {
         <div className="min-h-screen">
             <Header user={user} />
 
-            <main className="max-w-[960px] mx-auto px-6 pt-10 pb-12">
+            <main style={{ maxWidth: "960px", margin: "0 auto", padding: "2.5rem 1.5rem 3rem" }}>
                 {/* Page title */}
-                <div className="animate-fade-in-up mb-10">
-                    <h1 className="text-3xl font-bold mb-3">
+                <div className="animate-fade-in-up" style={{ marginBottom: "2.5rem", textAlign: "center" }}>
+                    <h1 className="text-3xl font-bold" style={{ marginBottom: "0.75rem" }}>
                         Your <span className="gradient-text">Bookmarks</span>
                     </h1>
                     <p className="text-text-secondary text-base">

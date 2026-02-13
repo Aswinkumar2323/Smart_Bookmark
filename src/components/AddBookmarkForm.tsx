@@ -73,14 +73,14 @@ export default function AddBookmarkForm({ userId, onBookmarkAdded }: AddBookmark
     return (
         <form
             onSubmit={handleSubmit}
-            className="glass-card animate-fade-in-up p-8 mb-10"
-            style={{ animationDelay: "0.1s" }}
+            className="glass-card animate-fade-in-up"
+            style={{ padding: "2rem", marginBottom: "2.5rem", animationDelay: "0.1s" }}
         >
-            <h2 className="text-lg font-semibold mb-4 text-text-primary">
+            <h2 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "1.25rem", textAlign: "center" }} className="text-text-primary">
                 ✨ Add New Bookmark
             </h2>
 
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex gap-3 flex-wrap" style={{ justifyContent: "center" }}>
                 <input
                     type="text"
                     placeholder="Bookmark title..."

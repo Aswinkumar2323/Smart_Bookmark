@@ -129,14 +129,14 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
     }
 
     return (
-        <div className="flex flex-col gap-4 mt-4">
-            <p className="text-sm text-text-muted mb-1">
+        <div className="flex flex-col gap-4" style={{ marginTop: "1rem", alignItems: "center" }}>
+            <p style={{ fontSize: "0.85rem", textAlign: "center", marginBottom: "0.25rem" }} className="text-text-muted">
                 {bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""} saved
             </p>
             {bookmarks.map((bookmark, index) => (
                 <div
                     key={bookmark.id}
-                    style={{ animationDelay: `${index * 0.05}s` }}
+                    style={{ animationDelay: `${index * 0.05}s`, width: "100%" }}
                 >
                     <BookmarkCard bookmark={bookmark} />
                 </div>
