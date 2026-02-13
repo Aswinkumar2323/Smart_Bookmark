@@ -1,18 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
+import type { Bookmark } from "@/lib/types";
 
 interface AddBookmarkFormProps {
     userId: string;
+    onBookmarkAdded?: (bookmark: Bookmark) => void;
 }
 
-export default function AddBookmarkForm({ userId }: AddBookmarkFormProps) {
+export default function AddBookmarkForm({ userId, onBookmarkAdded }: AddBookmarkFormProps) {
     const [title, setTitle] = useState("");
     const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const supabase = createClient();
+    const supabase = useMemo(() => createClient(), []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,19 +36,24 @@ export default function AddBookmarkForm({ userId }: AddBookmarkFormProps) {
 
         setLoading(true);
         try {
-            const { error: insertError } = await supabase
+            const { data, error: insertError } = await supabase
                 .from("bookmarks")
                 .insert({
                     title: title.trim(),
                     url: url.trim(),
                     user_id: userId,
-                });
+                })
+                .select()
+                .single();
 
             if (insertError) {
                 setError(insertError.message);
             } else {
                 setTitle("");
                 setUrl("");
+                if (data && onBookmarkAdded) {
+                    onBookmarkAdded(data as Bookmark);
+                }
             }
         } catch {
             setError("Something went wrong. Please try again.");

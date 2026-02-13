@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Bookmark } from "@/lib/types";
 import BookmarkCard from "./BookmarkCard";
 
 interface BookmarkListProps {
     userId: string;
+    newBookmark?: Bookmark | null;
 }
 
-export default function BookmarkList({ userId }: BookmarkListProps) {
+export default function BookmarkList({ userId, newBookmark }: BookmarkListProps) {
     const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
     const [loading, setLoading] = useState(true);
-    const supabase = createClient();
+    const supabase = useMemo(() => createClient(), []);
 
     useEffect(() => {
         // Fetch initial bookmarks
@@ -68,7 +69,18 @@ export default function BookmarkList({ userId }: BookmarkListProps) {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [userId, supabase]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userId]);
+
+    // Optimistic update: when parent passes a newly added bookmark, prepend it
+    useEffect(() => {
+        if (newBookmark) {
+            setBookmarks((prev) => {
+                if (prev.some((b) => b.id === newBookmark.id)) return prev;
+                return [newBookmark, ...prev];
+            });
+        }
+    }, [newBookmark]);
 
     if (loading) {
         return (

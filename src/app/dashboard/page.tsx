@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
-import AddBookmarkForm from "@/components/AddBookmarkForm";
-import BookmarkList from "@/components/BookmarkList";
+import DashboardClient from "@/components/DashboardClient";
+
+export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
     const supabase = await createClient();
@@ -44,11 +45,8 @@ export default async function Dashboard() {
                     </p>
                 </div>
 
-                {/* Add Bookmark Form */}
-                <AddBookmarkForm userId={user.id} />
-
-                {/* Bookmark List */}
-                <BookmarkList userId={user.id} />
+                {/* Bookmark Manager (Form + List with realtime updates) */}
+                <DashboardClient userId={user.id} />
             </main>
         </div>
     );

@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import AuthButton from "@/components/AuthButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
     const supabase = await createClient();
     const {
