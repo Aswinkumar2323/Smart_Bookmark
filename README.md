@@ -61,6 +61,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 **Solution**: Changed `redirectTo` to the **app's own** `/auth/callback` route: `${window.location.origin}/auth/callback`. Supabase handles the Google ↔ Supabase callback internally — `redirectTo` is where Supabase sends the user back to *our* app with an auth code. Also had to whitelist the app URL in Supabase Dashboard → Authentication → URL Configuration → Redirect URLs.
 
+### 3. Bookmarks didn't update in real-time across tabs
+
+**Problem**: After adding a bookmark, it only appeared in the current tab — other open tabs didn't show the new bookmark until manually refreshed. Deletion worked cross-tab, but insertion did not.
+
+**Solution**: Applied a three-part fix:
+- Stabilized the Supabase client with `useMemo(() => createClient(), [])` and removed it from `useEffect` deps
+- Switched to a **wildcard** (`event: "*"`) postgres_changes subscription with client-side `user_id` filtering
+- Added a **Supabase Broadcast channel** (`bookmarks-sync-{userId}`) as a secondary cross-tab sync mechanism — `AddBookmarkForm` and `BookmarkCard` broadcast add/delete events, and `BookmarkList` listens on the same channel. This guarantees instant cross-tab updates even if `postgres_changes` is unreliable.
+- Created a `DashboardClient.tsx` wrapper that passes newly added bookmarks from the form to the list via React state for **optimistic same-tab updates**
 
 ---
 
@@ -77,9 +86,10 @@ src/
 ├── components/
 │   ├── AuthButton.tsx          # Google sign-in button
 │   ├── Header.tsx              # Sticky nav with user info
-│   ├── AddBookmarkForm.tsx     # Title + URL form
-│   ├── BookmarkCard.tsx        # Single bookmark display
-│   └── BookmarkList.tsx        # Real-time list with subscriptions
+│   ├── DashboardClient.tsx     # Client wrapper for realtime state
+│   ├── AddBookmarkForm.tsx     # Title + URL form + broadcast
+│   ├── BookmarkCard.tsx        # Single bookmark display + broadcast
+│   └── BookmarkList.tsx        # Real-time list with dual-channel sync
 ├── lib/
 │   ├── supabase/client.ts      # Browser Supabase client
 │   ├── supabase/server.ts      # Server Supabase client
