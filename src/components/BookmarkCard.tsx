@@ -2,7 +2,7 @@
 
 import type { Bookmark } from "@/lib/types";
 import { createClient } from "@/lib/supabase/client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
@@ -10,12 +10,17 @@ interface BookmarkCardProps {
 
 export default function BookmarkCard({ bookmark }: BookmarkCardProps) {
     const [deleting, setDeleting] = useState(false);
-    const supabase = createClient();
+    const supabase = useMemo(() => createClient(), []);
 
     const handleDelete = async () => {
         setDeleting(true);
         await supabase.from("bookmarks").delete().eq("id", bookmark.id);
-        // The realtime subscription in BookmarkList will handle removing from UI
+        // Broadcast deletion to other tabs for cross-tab realtime sync
+        supabase.channel(`bookmarks-sync-${bookmark.user_id}`).send({
+            type: "broadcast",
+            event: "bookmark-deleted",
+            payload: { id: bookmark.id },
+        });
     };
 
     const formatDate = (dateStr: string) => {

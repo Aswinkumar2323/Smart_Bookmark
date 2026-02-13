@@ -51,8 +51,16 @@ export default function AddBookmarkForm({ userId, onBookmarkAdded }: AddBookmark
             } else {
                 setTitle("");
                 setUrl("");
-                if (data && onBookmarkAdded) {
-                    onBookmarkAdded(data as Bookmark);
+                if (data) {
+                    // Broadcast to other tabs for cross-tab realtime sync
+                    supabase.channel(`bookmarks-sync-${userId}`).send({
+                        type: "broadcast",
+                        event: "bookmark-added",
+                        payload: data,
+                    });
+                    if (onBookmarkAdded) {
+                        onBookmarkAdded(data as Bookmark);
+                    }
                 }
             }
         } catch {

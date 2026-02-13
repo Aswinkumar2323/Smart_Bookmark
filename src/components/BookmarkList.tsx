@@ -32,43 +32,58 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
 
         fetchBookmarks();
 
-        // Subscribe to realtime changes
-        const channel = supabase
-            .channel("bookmarks-realtime")
+        // Subscribe to realtime postgres changes (wildcard for all events)
+        const dbChannel = supabase
+            .channel(`bookmarks-db-${userId}`)
             .on(
                 "postgres_changes",
                 {
-                    event: "INSERT",
+                    event: "*",
                     schema: "public",
                     table: "bookmarks",
                 },
                 (payload) => {
-                    const newBookmark = payload.new as Bookmark;
-                    // Filter client-side to only show this user's bookmarks
-                    if (newBookmark.user_id !== userId) return;
-                    setBookmarks((prev) => {
-                        // Avoid duplicates
-                        if (prev.some((b) => b.id === newBookmark.id)) return prev;
-                        return [newBookmark, ...prev];
-                    });
-                }
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event: "DELETE",
-                    schema: "public",
-                    table: "bookmarks",
-                },
-                (payload) => {
-                    const deletedId = payload.old.id;
-                    setBookmarks((prev) => prev.filter((b) => b.id !== deletedId));
+                    if (payload.eventType === "INSERT") {
+                        const inserted = payload.new as Bookmark;
+                        if (inserted.user_id !== userId) return;
+                        setBookmarks((prev) => {
+                            if (prev.some((b) => b.id === inserted.id)) return prev;
+                            return [inserted, ...prev];
+                        });
+                    } else if (payload.eventType === "DELETE") {
+                        const deletedId = (payload.old as { id: string }).id;
+                        setBookmarks((prev) => prev.filter((b) => b.id !== deletedId));
+                    } else if (payload.eventType === "UPDATE") {
+                        const updated = payload.new as Bookmark;
+                        if (updated.user_id !== userId) return;
+                        setBookmarks((prev) =>
+                            prev.map((b) => (b.id === updated.id ? updated : b))
+                        );
+                    }
                 }
             )
             .subscribe();
 
+        // Secondary broadcast channel for reliable cross-tab sync
+        const broadcastChannel = supabase
+            .channel(`bookmarks-sync-${userId}`)
+            .on("broadcast", { event: "bookmark-added" }, ({ payload }) => {
+                const added = payload as Bookmark;
+                if (added.user_id !== userId) return;
+                setBookmarks((prev) => {
+                    if (prev.some((b) => b.id === added.id)) return prev;
+                    return [added, ...prev];
+                });
+            })
+            .on("broadcast", { event: "bookmark-deleted" }, ({ payload }) => {
+                const deletedId = payload.id as string;
+                setBookmarks((prev) => prev.filter((b) => b.id !== deletedId));
+            })
+            .subscribe();
+
         return () => {
-            supabase.removeChannel(channel);
+            supabase.removeChannel(dbChannel);
+            supabase.removeChannel(broadcastChannel);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId]);
