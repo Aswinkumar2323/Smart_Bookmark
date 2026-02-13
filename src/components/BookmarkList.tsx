@@ -100,7 +100,7 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
 
     if (loading) {
         return (
-            <div className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col gap-5 mt-6">
                 {[1, 2, 3].map((i) => (
                     <div
                         key={i}
@@ -116,7 +116,7 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
 
     if (bookmarks.length === 0) {
         return (
-            <div className="glass-card animate-fade-in p-12 text-center mt-4">
+            <div className="glass-card animate-fade-in p-12 text-center mt-6">
                 <div className="text-5xl mb-4">📭</div>
                 <h3 className="text-xl font-semibold mb-2">
                     No bookmarks yet
@@ -129,7 +129,7 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
     }
 
     return (
-        <div className="flex flex-col gap-3 mt-2">
+        <div className="flex flex-col gap-4 mt-4">
             <p className="text-sm text-text-muted mb-1">
                 {bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""} saved
             </p>

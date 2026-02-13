@@ -41,7 +41,7 @@ export default function BookmarkCard({ bookmark }: BookmarkCardProps) {
 
     return (
         <div
-            className={`glass-card animate-fade-in-up p-5 flex items-start justify-between gap-4 transition-opacity duration-300 ${deleting ? "opacity-50" : "opacity-100"}`}
+            className={`glass-card animate-fade-in-up p-6 flex items-start justify-between gap-5 transition-opacity duration-300 ${deleting ? "opacity-50" : "opacity-100"}`}
         >
             <div className="flex-1 min-w-0">
                 {/* Title */}

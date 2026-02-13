@@ -19,13 +19,13 @@ export default async function Dashboard() {
         <div className="min-h-screen">
             <Header user={user} />
 
-            <main className="max-w-[960px] mx-auto px-6 py-8">
+            <main className="max-w-[960px] mx-auto px-6 pt-10 pb-12">
                 {/* Page title */}
-                <div className="animate-fade-in-up mb-8">
-                    <h1 className="text-3xl font-bold mb-2">
+                <div className="animate-fade-in-up mb-10">
+                    <h1 className="text-3xl font-bold mb-3">
                         Your <span className="gradient-text">Bookmarks</span>
                     </h1>
-                    <p className="text-text-secondary text-[0.95rem]">
+                    <p className="text-text-secondary text-base">
                         Add, manage, and access your saved links in real-time.
                     </p>
                 </div>

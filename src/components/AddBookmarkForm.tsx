@@ -73,7 +73,7 @@ export default function AddBookmarkForm({ userId, onBookmarkAdded }: AddBookmark
     return (
         <form
             onSubmit={handleSubmit}
-            className="glass-card animate-fade-in-up p-6 mb-8"
+            className="glass-card animate-fade-in-up p-8 mb-10"
             style={{ animationDelay: "0.1s" }}
         >
             <h2 className="text-lg font-semibold mb-4 text-text-primary">
