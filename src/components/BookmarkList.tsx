@@ -41,10 +41,11 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
                     event: "INSERT",
                     schema: "public",
                     table: "bookmarks",
-                    filter: `user_id=eq.${userId}`,
                 },
                 (payload) => {
                     const newBookmark = payload.new as Bookmark;
+                    // Filter client-side to only show this user's bookmarks
+                    if (newBookmark.user_id !== userId) return;
                     setBookmarks((prev) => {
                         // Avoid duplicates
                         if (prev.some((b) => b.id === newBookmark.id)) return prev;
