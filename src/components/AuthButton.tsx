@@ -17,13 +17,7 @@ export default function AuthButton() {
     return (
         <button
             onClick={handleSignIn}
-            className="btn-gradient"
-            style={{
-                fontSize: "1.05rem",
-                padding: "1rem 2rem",
-                borderRadius: "1rem",
-                gap: "0.75rem",
-            }}
+            className="btn-gradient text-base px-8 py-4 rounded-2xl gap-3"
         >
             <svg
                 width="20"

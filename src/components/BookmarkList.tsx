@@ -100,46 +100,14 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
 
     if (loading) {
         return (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem",
-                    marginTop: "1rem",
-                }}
-            >
+            <div className="flex flex-col gap-4 mt-4">
                 {[1, 2, 3].map((i) => (
                     <div
                         key={i}
-                        className="glass-card"
-                        style={{
-                            padding: "1.5rem",
-                            opacity: 0.5,
-                        }}
+                        className="glass-card p-6 opacity-50"
                     >
-                        <div
-                            style={{
-                                height: "1rem",
-                                width: "60%",
-                                background:
-                                    "linear-gradient(90deg, var(--color-bg-secondary), var(--color-bg-card), var(--color-bg-secondary))",
-                                backgroundSize: "200% 100%",
-                                animation: "shimmer 1.5s infinite",
-                                borderRadius: "0.5rem",
-                                marginBottom: "0.5rem",
-                            }}
-                        />
-                        <div
-                            style={{
-                                height: "0.75rem",
-                                width: "40%",
-                                background:
-                                    "linear-gradient(90deg, var(--color-bg-secondary), var(--color-bg-card), var(--color-bg-secondary))",
-                                backgroundSize: "200% 100%",
-                                animation: "shimmer 1.5s infinite",
-                                borderRadius: "0.5rem",
-                            }}
-                        />
+                        <div className="h-4 w-3/5 bg-linear-to-r from-bg-secondary via-bg-card to-bg-secondary bg-size-[200%_100%] animate-shimmer rounded-lg mb-2" />
+                        <div className="h-3 w-2/5 bg-linear-to-r from-bg-secondary via-bg-card to-bg-secondary bg-size-[200%_100%] animate-shimmer rounded-lg" />
                     </div>
                 ))}
             </div>
@@ -148,30 +116,12 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
 
     if (bookmarks.length === 0) {
         return (
-            <div
-                className="glass-card animate-fade-in"
-                style={{
-                    padding: "3rem",
-                    textAlign: "center",
-                    marginTop: "1rem",
-                }}
-            >
-                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📭</div>
-                <h3
-                    style={{
-                        fontSize: "1.2rem",
-                        fontWeight: 600,
-                        marginBottom: "0.5rem",
-                    }}
-                >
+            <div className="glass-card animate-fade-in p-12 text-center mt-4">
+                <div className="text-5xl mb-4">📭</div>
+                <h3 className="text-xl font-semibold mb-2">
                     No bookmarks yet
                 </h3>
-                <p
-                    style={{
-                        color: "var(--color-text-secondary)",
-                        fontSize: "0.9rem",
-                    }}
-                >
+                <p className="text-text-secondary text-sm">
                     Add your first bookmark using the form above!
                 </p>
             </div>
@@ -179,21 +129,8 @@ export default function BookmarkList({ userId, newBookmark }: BookmarkListProps)
     }
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.75rem",
-                marginTop: "0.5rem",
-            }}
-        >
-            <p
-                style={{
-                    fontSize: "0.85rem",
-                    color: "var(--color-text-muted)",
-                    marginBottom: "0.25rem",
-                }}
-            >
+        <div className="flex flex-col gap-3 mt-2">
+            <p className="text-sm text-text-muted mb-1">
                 {bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""} saved
             </p>
             {bookmarks.map((bookmark, index) => (

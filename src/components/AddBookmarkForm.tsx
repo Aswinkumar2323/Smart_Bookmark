@@ -73,38 +73,20 @@ export default function AddBookmarkForm({ userId, onBookmarkAdded }: AddBookmark
     return (
         <form
             onSubmit={handleSubmit}
-            className="glass-card animate-fade-in-up"
-            style={{
-                padding: "1.5rem",
-                marginBottom: "2rem",
-                animationDelay: "0.1s",
-            }}
+            className="glass-card animate-fade-in-up p-6 mb-8"
+            style={{ animationDelay: "0.1s" }}
         >
-            <h2
-                style={{
-                    fontSize: "1.1rem",
-                    fontWeight: 600,
-                    marginBottom: "1rem",
-                    color: "var(--color-text-primary)",
-                }}
-            >
+            <h2 className="text-lg font-semibold mb-4 text-text-primary">
                 ✨ Add New Bookmark
             </h2>
 
-            <div
-                style={{
-                    display: "flex",
-                    gap: "0.75rem",
-                    flexWrap: "wrap",
-                }}
-            >
+            <div className="flex gap-3 flex-wrap">
                 <input
                     type="text"
                     placeholder="Bookmark title..."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="input-field"
-                    style={{ flex: "1", minWidth: "180px" }}
+                    className="input-field flex-1 min-w-[180px]"
                     disabled={loading}
                 />
                 <input
@@ -112,29 +94,17 @@ export default function AddBookmarkForm({ userId, onBookmarkAdded }: AddBookmark
                     placeholder="https://example.com"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
-                    className="input-field"
-                    style={{ flex: "2", minWidth: "250px" }}
+                    className="input-field flex-2 min-w-[250px]"
                     disabled={loading}
                 />
                 <button
                     type="submit"
-                    className="btn-gradient"
+                    className="btn-gradient whitespace-nowrap"
                     disabled={loading}
-                    style={{ whiteSpace: "nowrap" }}
                 >
                     {loading ? (
                         <>
-                            <span
-                                style={{
-                                    display: "inline-block",
-                                    width: "16px",
-                                    height: "16px",
-                                    border: "2px solid rgba(255,255,255,0.3)",
-                                    borderTopColor: "white",
-                                    borderRadius: "50%",
-                                    animation: "spin 0.6s linear infinite",
-                                }}
-                            />
+                            <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             Adding...
                         </>
                     ) : (
@@ -144,24 +114,10 @@ export default function AddBookmarkForm({ userId, onBookmarkAdded }: AddBookmark
             </div>
 
             {error && (
-                <p
-                    style={{
-                        color: "var(--color-danger)",
-                        fontSize: "0.85rem",
-                        marginTop: "0.75rem",
-                    }}
-                >
+                <p className="text-danger text-sm mt-3">
                     {error}
                 </p>
             )}
-
-            <style jsx>{`
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
         </form>
     );
 }

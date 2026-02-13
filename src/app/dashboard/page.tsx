@@ -16,31 +16,16 @@ export default async function Dashboard() {
     }
 
     return (
-        <div style={{ minHeight: "100vh" }}>
+        <div className="min-h-screen">
             <Header user={user} />
 
-            <main
-                style={{
-                    maxWidth: "960px",
-                    margin: "0 auto",
-                    padding: "2rem 1.5rem",
-                }}
-            >
+            <main className="max-w-[960px] mx-auto px-6 py-8">
                 {/* Page title */}
-                <div
-                    className="animate-fade-in-up"
-                    style={{ marginBottom: "2rem" }}
-                >
-                    <h1
-                        style={{
-                            fontSize: "2rem",
-                            fontWeight: 700,
-                            marginBottom: "0.5rem",
-                        }}
-                    >
+                <div className="animate-fade-in-up mb-8">
+                    <h1 className="text-3xl font-bold mb-2">
                         Your <span className="gradient-text">Bookmarks</span>
                     </h1>
-                    <p style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem" }}>
+                    <p className="text-text-secondary text-[0.95rem]">
                         Add, manage, and access your saved links in real-time.
                     </p>
                 </div>

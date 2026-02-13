@@ -31,7 +31,7 @@ export default function RootLayout({
                 <div className="bg-orb bg-orb-1" />
                 <div className="bg-orb bg-orb-2" />
 
-                <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
+                <div className="relative z-1">{children}</div>
             </body>
         </html>
     );

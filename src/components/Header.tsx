@@ -19,110 +19,39 @@ export default function Header({ user }: HeaderProps) {
     };
 
     return (
-        <header
-            className="glass"
-            style={{
-                position: "sticky",
-                top: 0,
-                zIndex: 50,
-                padding: "0.75rem 1.5rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-            }}
-        >
+        <header className="glass sticky top-0 z-50 px-6 py-3 flex items-center justify-between">
             {/* Logo */}
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.75rem",
-                }}
-            >
-                <div
-                    style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "0.75rem",
-                        background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "1.3rem",
-                    }}
-                >
+            <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-accent-1 to-accent-2 flex items-center justify-center text-xl">
                     🔖
                 </div>
-                <span
-                    style={{
-                        fontWeight: 700,
-                        fontSize: "1.15rem",
-                    }}
-                >
+                <span className="font-bold text-lg">
                     <span className="gradient-text">Smart</span> Bookmark
                 </span>
             </div>
 
             {/* User Info + Sign Out */}
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1rem",
-                }}
-            >
+            <div className="flex items-center gap-4">
                 {/* Avatar */}
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.6rem",
-                    }}
-                >
+                <div className="flex items-center gap-2.5">
                     {user.user_metadata?.avatar_url ? (
                         <img
                             src={user.user_metadata.avatar_url}
                             alt="Avatar"
-                            style={{
-                                width: "32px",
-                                height: "32px",
-                                borderRadius: "50%",
-                                border: "2px solid var(--color-accent-1)",
-                            }}
+                            className="w-8 h-8 rounded-full border-2 border-accent-1"
                             referrerPolicy="no-referrer"
                         />
                     ) : (
-                        <div
-                            style={{
-                                width: "32px",
-                                height: "32px",
-                                borderRadius: "50%",
-                                background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "0.85rem",
-                                fontWeight: 600,
-                            }}
-                        >
+                        <div className="w-8 h-8 rounded-full bg-linear-to-br from-accent-1 to-accent-2 flex items-center justify-center text-sm font-semibold">
                             {user.email?.charAt(0).toUpperCase()}
                         </div>
                     )}
-                    <span
-                        style={{
-                            fontSize: "0.85rem",
-                            color: "var(--color-text-secondary)",
-                            maxWidth: "150px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                        }}
-                    >
+                    <span className="text-sm text-text-secondary max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap">
                         {user.email}
                     </span>
                 </div>
 
-                <button onClick={handleSignOut} className="btn-ghost" style={{ fontSize: "0.85rem", padding: "0.5rem 1rem" }}>
+                <button onClick={handleSignOut} className="btn-ghost text-sm px-4 py-2">
                     Sign Out
                 </button>
             </div>

@@ -41,27 +41,11 @@ export default function BookmarkCard({ bookmark }: BookmarkCardProps) {
 
     return (
         <div
-            className="glass-card animate-fade-in-up"
-            style={{
-                padding: "1.25rem",
-                display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "space-between",
-                gap: "1rem",
-                opacity: deleting ? 0.5 : 1,
-                transition: "opacity 0.3s ease",
-            }}
+            className={`glass-card animate-fade-in-up p-5 flex items-start justify-between gap-4 transition-opacity duration-300 ${deleting ? "opacity-50" : "opacity-100"}`}
         >
-            <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="flex-1 min-w-0">
                 {/* Title */}
-                <h3
-                    style={{
-                        fontSize: "1.05rem",
-                        fontWeight: 600,
-                        marginBottom: "0.35rem",
-                        color: "var(--color-text-primary)",
-                    }}
-                >
+                <h3 className="text-[1.05rem] font-semibold mb-1 text-text-primary">
                     {bookmark.title}
                 </h3>
 
@@ -70,25 +54,7 @@ export default function BookmarkCard({ bookmark }: BookmarkCardProps) {
                     href={bookmark.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                        fontSize: "0.85rem",
-                        color: "var(--color-accent-3)",
-                        textDecoration: "none",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "0.35rem",
-                        marginBottom: "0.5rem",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        maxWidth: "100%",
-                    }}
-                    onMouseEnter={(e) =>
-                        (e.currentTarget.style.textDecoration = "underline")
-                    }
-                    onMouseLeave={(e) =>
-                        (e.currentTarget.style.textDecoration = "none")
-                    }
+                    className="text-sm text-accent-3 no-underline inline-flex items-center gap-1.5 mb-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-full hover:underline"
                 >
                     <svg
                         width="14"
@@ -108,12 +74,7 @@ export default function BookmarkCard({ bookmark }: BookmarkCardProps) {
                 </a>
 
                 {/* Date */}
-                <p
-                    style={{
-                        fontSize: "0.75rem",
-                        color: "var(--color-text-muted)",
-                    }}
-                >
+                <p className="text-xs text-text-muted">
                     Added {formatDate(bookmark.created_at)}
                 </p>
             </div>
@@ -122,14 +83,8 @@ export default function BookmarkCard({ bookmark }: BookmarkCardProps) {
             <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="btn-danger"
+                className="btn-danger shrink-0 flex items-center gap-1.5"
                 title="Delete bookmark"
-                style={{
-                    flexShrink: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.35rem",
-                }}
             >
                 <svg
                     width="14"
